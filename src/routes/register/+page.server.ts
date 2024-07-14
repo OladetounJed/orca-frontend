@@ -1,26 +1,25 @@
-import { registerFormSchema } from '$lib/components/auth/register-form/schema';
+import type { PageServerLoad } from './$types';
+import { BASE_URL } from '$env/static/private';
 
-import { fail } from '@sveltejs/kit';
-import { superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
-import type { PageServerLoad, Actions } from './$types';
+export const load: PageServerLoad = async ({ url }) => {
+	const sessionId = url.searchParams.get('sessionId');
+	if (!sessionId) {
+		return;
+	}
 
-export const load: PageServerLoad = async () => {
-	return {
-		form: await superValidate(zod(registerFormSchema))
-	};
-};
+	try {
+		const response = await fetch(`${BASE_URL}/session?sessionId=${sessionId}`);
 
-export const actions: Actions = {
-	default: async (event) => {
-		const form = await superValidate(event, zod(registerFormSchema));
-		if (!form.valid) {
-			return fail(400, {
-				form
-			});
+		if (!response.ok) {
+			return;
 		}
+
+		const sessionData = await response.json();
+
 		return {
-			form
+			sessionData
 		};
+	} catch {
+		return;
 	}
 };

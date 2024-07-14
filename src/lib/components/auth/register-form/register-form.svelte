@@ -1,48 +1,87 @@
 <script lang="ts">
-	import * as Form from '$lib/components/shared/form';
+	import { Button } from '$lib/components/shared/button';
 	import { Input, PasswordInput } from '$lib/components/shared/input';
-	import { registerFormSchema, type RegisterFormSchema } from './schema';
-	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import {
+		markAsTouched,
+		registerFormSchema,
+		validateFormHandler
+	} from '$lib/utils/formValidation';
+	import type { RegisterFormErrorType } from '$lib/utils/registerFormHandler';
+	import { createEventDispatcher, onMount } from 'svelte';
+	import { writable } from 'svelte/store';
 
-	export let data: SuperValidated<Infer<RegisterFormSchema>>;
-
-	const form = superForm(data, {
-		validators: zodClient(registerFormSchema)
+	const dispatch = createEventDispatcher();
+	const formData = writable<{ telegramId: string; firstName: string; password: string }>({
+		telegramId: '',
+		firstName: '',
+		password: ''
 	});
 
-	const { form: formData, enhance } = form;
+	export let sessionData: { telegramId: string; firstName: string } | undefined;
+
+	onMount(() => {
+		if (sessionData) {
+			formData.set({
+				telegramId: `${sessionData.telegramId}`,
+				firstName: sessionData.firstName,
+				password: ''
+			});
+		}
+	});
+
+	const validationErrors = writable<RegisterFormErrorType>({});
+	const showPassword = writable(false);
+	const touched = writable({
+		telegramId: false,
+		password: false,
+		firstName: false
+	});
+
+	$: $formData, validateFormHandler(validationErrors, $formData, registerFormSchema);
+
+	const handleSubmit = () => {
+		const validatedData = validateFormHandler(validationErrors, $formData, registerFormSchema);
+		if (validatedData) {
+			dispatch('submit', validatedData);
+		}
+	};
 </script>
 
-<form class="w-full p-4 gap-6 flex flex-col" method="POST" use:enhance>
-	<Form.Field {form} name="telegramId">
-		<Form.Control let:attrs>
-			<Input {...attrs} bind:value={$formData.telegramId} placeholder="telegram id" />
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
-	<Form.Field {form} name="firstName">
-		<Form.Control let:attrs>
-			<Input {...attrs} bind:value={$formData.firstName} placeholder="first name" />
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
-	<Form.Field {form} name="password">
-		<Form.Control let:attrs>
-			<PasswordInput onClick={() => console.log('hello')} buttonLabel="show">
-				<Input
-					class="custom-input truncate rounded-none border-none p-0"
-					{...attrs}
-					bind:value={$formData.password}
-					placeholder="password"
-				/>
-			</PasswordInput>
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
+<form class="w-full gap-6 flex flex-col" on:submit|preventDefault={handleSubmit}>
+	<Input
+		required
+		bind:value={$formData.telegramId}
+		placeholder="telegram id"
+		on:input={() => markAsTouched('telegramId', touched)}
+	/>
+	{#if $touched.telegramId && $validationErrors.telegramId}
+		<p class="text-red-500 text-xs">{$validationErrors.telegramId[0]}</p>
+	{/if}
+	<Input
+		required
+		bind:value={$formData.firstName}
+		placeholder="first name"
+		on:input={() => markAsTouched('firstName', touched)}
+	/>
+	{#if $touched.firstName && $validationErrors.firstName}
+		<p class="text-red-500 text-xs">{$validationErrors.firstName[0]}</p>
+	{/if}
+	<PasswordInput onClick={() => showPassword.set(!$showPassword)} buttonLabel="show">
+		<Input
+			on:input={() => markAsTouched('password', touched)}
+			required
+			class="custom-input truncate rounded-none border-none p-0"
+			type={$showPassword ? 'text' : 'password'}
+			bind:value={$formData.password}
+			placeholder="password"
+		/>
+	</PasswordInput>
+	{#if $touched.password && $validationErrors.password}
+		<p class="text-red-500 text-xs">{$validationErrors.password[0]}</p>
+	{/if}
 	<p class="text-white text-xs font-light">
 		have an account?
 		<a class="underline" href="/login">login</a>
 	</p>
-	<Form.Button>register</Form.Button>
+	<Button type="submit">register</Button>
 </form>

@@ -1,9 +1,15 @@
 <script lang="ts">
 	import { LoginForm } from '$lib/components/auth/login-form';
 	import { Logo } from '$lib/components/shared/logo';
-	import type { PageData } from '../$types';
+	import { TokenVerificationSheet } from '$lib/components/auth/token-verification-sheet';
+	import { loginFormHandler } from '$lib/utils/loginFormHandler';
+	import { loginData } from '$lib/stores/authStore';
+	import { isTokenSheetVisible, showTokenSheet } from '../../lib/stores/authStore';
 
-	export let data: PageData;
+	const showTokenModal = (event: CustomEvent) => {
+		loginData.set(event.detail);
+		showTokenSheet();
+	};
 </script>
 
 <div>
@@ -12,5 +18,8 @@
 		<h1>let's sign you in.</h1>
 	</section>
 
-	<LoginForm data={data.form} />
+	<LoginForm on:submit={showTokenModal} />
+	{#if $isTokenSheetVisible}
+		<TokenVerificationSheet on:saveChanges={(event) => loginFormHandler(event, $loginData)} />
+	{/if}
 </div>

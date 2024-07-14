@@ -3,7 +3,7 @@
 	import '../app.css';
 </script>
 
-<div class="min-h-screen bg-gohan font-satoshi flex justify-center w-full">
+<div class="min-h-screen bg-gohan font-satoshi flex justify-center w-full p-4">
 	<Toaster position="top-center" />
 	<div class="max-w-[430px] w-full">
 		<slot />
