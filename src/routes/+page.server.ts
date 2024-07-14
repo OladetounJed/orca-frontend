@@ -1,11 +1,9 @@
 // src/routes/+page.server.ts
 import { redirect } from '@sveltejs/kit';
-import { parse } from 'cookie';
 import { BASE_URL } from '$env/static/private';
 
-export async function load({ request }) {
-	const cookies = parse(request.headers.get('cookie') || '');
-	const token = cookies.token;
+export async function load({ cookies }) {
+	const token = cookies.get('token');
 
 	if (!token) {
 		throw redirect(302, '/login');
@@ -17,6 +15,7 @@ export async function load({ request }) {
 	});
 
 	if (!response.ok) {
+		cookies.delete('token', { path: '/' });
 		throw redirect(302, '/login');
 	}
 

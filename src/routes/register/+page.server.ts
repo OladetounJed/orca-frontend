@@ -1,8 +1,14 @@
 import type { PageServerLoad } from './$types';
 import { BASE_URL } from '$env/static/private';
+import { redirect } from '@sveltejs/kit';
 
-export const load: PageServerLoad = async ({ url }) => {
+export const load: PageServerLoad = async ({ url, cookies }) => {
 	const sessionId = url.searchParams.get('sessionId');
+	const token = cookies.get('token');
+
+	if (token) {
+		throw redirect(302, '/');
+	}
 	if (!sessionId) {
 		return;
 	}
