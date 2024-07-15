@@ -37,11 +37,5 @@
 		{...$$restProps}
 	>
 		<slot />
-		<SheetPrimitive.Close
-			class="absolute left-1/2 transform -translate-x-1/2 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary"
-		>
-			<div class="h-1 w-10 bg-vegeta rounded-full" />
-			<span class="sr-only">Close</span>
-		</SheetPrimitive.Close>
 	</SheetPrimitive.Content>
 </SheetPortal>
