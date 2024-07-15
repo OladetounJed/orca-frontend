@@ -9,7 +9,7 @@
 		sheetTransitions,
 		sheetVariants
 	} from './index.js';
-	import { cn } from '$lib/utils';
+	import { cn } from '$lib/utils/classnames.js';
 
 	type $$Props = SheetPrimitive.ContentProps & {
 		side?: Side;

@@ -7,7 +7,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 	const token = cookies.get('token');
 
 	if (token) {
-		throw redirect(302, '/');
+		throw redirect(302, '/home');
 	}
 	if (!sessionId) {
 		return;

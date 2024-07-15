@@ -17,6 +17,8 @@ const commonValidationFields = {
 };
 
 export const loginFormSchema = z.object(commonValidationFields);
+
+
 export const registerFormSchema = z.object({
 	...commonValidationFields,
 	firstName: z
@@ -24,6 +26,8 @@ export const registerFormSchema = z.object({
 		.min(1, { message: 'first name is required' })
 		.max(50, { message: 'first name must be less than 50 characters long' })
 });
+
+
 export const tokenVerificationSchema = z.object({
 	token: z.string().min(1, { message: 'token is required' })
 });

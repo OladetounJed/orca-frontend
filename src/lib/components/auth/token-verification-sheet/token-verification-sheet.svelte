@@ -6,13 +6,12 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { pasteFromClipboard } from '$lib/utils/clipboard';
 	import { writable } from 'svelte/store';
-	import type { Writable } from 'svelte/store';
 	import {
 		markAsTouched,
 		tokenVerificationSchema,
 		validateFormHandler
 	} from '$lib/utils/formValidation';
-	import { closeTokenSheet, isTokenSheetVisible } from '$lib/stores/authStore';
+	import { tokenSheetState } from '$lib/stores/authStore';
 
 	const dispatch = createEventDispatcher();
 	let token: string = '';
@@ -30,13 +29,13 @@
 			tokenVerificationSchema
 		);
 		if (validatedToken) {
-			closeTokenSheet();
+			tokenSheetState.hide();
 			dispatch('saveChanges', token);
 		}
 	};
 </script>
 
-<Sheet.Root bind:open={$isTokenSheetVisible}>
+<Sheet.Root open={$tokenSheetState}>
 	<Sheet.Content side="bottom" class="flex flex-col gap-5">
 		<Sheet.Header>
 			<Sheet.Title>enter access token.</Sheet.Title>

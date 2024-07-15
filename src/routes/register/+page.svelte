@@ -3,7 +3,7 @@
 	import { Logo } from '$lib/components/shared/logo';
 	import { TokenConfirmationSheet } from '$lib/components/auth/token-confirmation-sheet';
 	import { redirectToHome, registerFormHandler } from '$lib/utils/registerFormHandler.js';
-	import { isTokenSheetVisible } from '../../lib/stores/authStore';
+	import { tokenSheetState } from '../../lib/stores/authStore';
 
 	export let data;
 </script>
@@ -15,7 +15,7 @@
 	</section>
 
 	<RegisterForm on:submit={registerFormHandler} sessionData={data.sessionData} />
-	{#if $isTokenSheetVisible}
+	{#if $tokenSheetState}
 		<TokenConfirmationSheet on:saveChanges={redirectToHome} />
 	{/if}
 </div>

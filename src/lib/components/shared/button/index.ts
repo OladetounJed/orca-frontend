@@ -3,7 +3,7 @@ import type { Button as ButtonPrimitive } from "bits-ui";
 import Root from "./button.svelte";
 
 const buttonVariants = tv({
-	base: "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-normal transition-colors disabled:opacity-50",
+	base: "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-normal transition-colors disabled:opacity-50 w-full",
 	variants: {
 		variant: {
 			default: "bg-goku text-black hover:bg-goku/90",

@@ -2,7 +2,7 @@ import { goto } from '$app/navigation';
 import { toast } from '$lib/components/shared/toast';
 import { browser } from '$app/environment';
 import { PUBLIC_BASE_URL } from '$env/static/public';
-import { closeTokenSheet, registrationData, showTokenSheet } from '$lib/stores/authStore';
+import { formSubmissionState, registrationData, tokenSheetState } from '$lib/stores/authStore';
 
 export type RegisterFormErrorType = {
 	telegramId?: string[];
@@ -18,6 +18,7 @@ export type RegisterFormType = {
 
 export const registerFormHandler = async (event: CustomEvent) => {
 	const { detail } = event;
+	formSubmissionState.start();
 	try {
 		const response = await fetch(`${PUBLIC_BASE_URL}/register`, {
 			method: 'POST',
@@ -31,14 +32,16 @@ export const registerFormHandler = async (event: CustomEvent) => {
 
 		if (response.ok) {
 			registrationData.set(result);
-			showTokenSheet();
+			tokenSheetState.show();
 			if (browser) {
 				document.cookie = `token=${result.token};path=/;max-age=86400;`;
 			}
 		} else {
 			toast.error('An error occurred during registration');
 		}
+		formSubmissionState.stop();
 	} catch (error) {
+		formSubmissionState.stop();
 		toast.error('An error occurred during registration');
 		console.error('An error occurred during registration', error);
 	}
@@ -46,6 +49,6 @@ export const registerFormHandler = async (event: CustomEvent) => {
 
 export const redirectToHome = () => {
 	toast.success('Registration successful');
-	goto('/');
-	closeTokenSheet();
+	goto('/home');
+	tokenSheetState.hide();
 };

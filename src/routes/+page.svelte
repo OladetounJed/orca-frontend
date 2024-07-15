@@ -1,48 +1,24 @@
 <script lang="ts">
+	import { LoginForm } from '$lib/components/auth/login-form';
 	import { Logo } from '$lib/components/shared/logo';
-	import { Button } from '$lib/components/shared/button';
-	import { onMount } from 'svelte';
-	import { userStore } from '$lib/stores/userStore';
-	import { goto } from '$app/navigation';
-	import { time } from '$lib/stores/timeStore';
-	import { dateFormatter } from '$lib/utils/dateFormat';
-	export let data;
+	import { TokenVerificationSheet } from '$lib/components/auth/token-verification-sheet';
+	import { loginFormHandler } from '$lib/utils/loginFormHandler';
+	import { loginData, tokenSheetState } from '$lib/stores/authStore';
 
-	onMount(() => {
-		if (data.userData) {
-			userStore.set(data.userData);
-		}
-	});
-
-	const handleLogout = () => {
-		document.cookie = 'token=; Max-Age=0; path=/;';
-		goto('/login');
+	const showTokenModal = (event: CustomEvent) => {
+		loginData.set(event.detail);
+		tokenSheetState.show();
 	};
 </script>
 
 <div>
-	{#if !$userStore?.id}
-		<p>loading...</p>
-	{:else}
-		<div class="flex flex-col gap-12">
-			<section class="flex justify-between">
-				<Logo width={24} height={28} />
-				<h1 class="text-sm">welcome back, {$userStore?.first_name}</h1>
-			</section>
-			<section class="flex flex-col gap-9">
-				<p>Your telegam id is <span class="underline">{$userStore?.telegram_id}</span></p>
-				<p class="flex flex-col gap-4">
-					<span>you created your orca account on</span>
-					{#if $userStore?.createdAt}
-						<span class="underline">{dateFormatter.format(new Date($userStore.createdAt))}</span>
-					{/if}
-				</p>
-				<p class="flex flex-col gap-4">
-					<span>the current time is</span>
-					<span class="underline">{dateFormatter.format($time)}</span>
-				</p>
-				<Button class="w-full" variant="destructive" on:click={handleLogout}>logout</Button>
-			</section>
-		</div>
+	<section class="flex flex-col items-center justify-center gap-4 pt-24 pb-12">
+		<Logo />
+		<h1>let's sign you in.</h1>
+	</section>
+
+	<LoginForm on:submit={showTokenModal} />
+	{#if $tokenSheetState}
+		<TokenVerificationSheet on:saveChanges={(event) => loginFormHandler(event, $loginData)} />
 	{/if}
 </div>

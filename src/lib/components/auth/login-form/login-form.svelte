@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/shared/button';
 	import { Input, PasswordInput } from '$lib/components/shared/input';
+	import { formSubmissionState } from '$lib/stores/authStore';
 	import { loginFormSchema, markAsTouched, validateFormHandler } from '$lib/utils/formValidation';
 	import { type LoginFormErrorType, type LoginFormType } from '$lib/utils/loginFormHandler';
 	import { createEventDispatcher } from 'svelte';
@@ -55,5 +56,7 @@
 		don't have an account?
 		<a class="underline" href="/register">register</a>
 	</p>
-	<Button type="submit">login</Button>
+	<Button disabled={$formSubmissionState} type="submit"
+		>{$formSubmissionState ? 'please wait..,' : 'login'}</Button
+	>
 </form>

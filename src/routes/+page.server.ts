@@ -1,27 +1,10 @@
-// src/routes/+page.server.ts
+import type { PageServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
-import { BASE_URL } from '$env/static/private';
 
-export async function load({ cookies }) {
+export const load: PageServerLoad = async ({ cookies }) => {
 	const token = cookies.get('token');
 
-	if (!token) {
-		throw redirect(302, '/login');
+	if (token) {
+		throw redirect(302, '/home');
 	}
-	const response = await fetch(`${BASE_URL}/user`, {
-		headers: {
-			Authorization: `Bearer ${token}`
-		}
-	});
-
-	if (!response.ok) {
-		cookies.delete('token', { path: '/' });
-		throw redirect(302, '/login');
-	}
-
-	const userData = await response.json();
-
-	return {
-		userData
-	};
-}
+};

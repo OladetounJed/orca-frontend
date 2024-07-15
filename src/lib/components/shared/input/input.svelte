@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { InputEvents } from './';
-	import { cn } from '$lib/utils';
+	import { cn } from '$lib/utils/classnames';
 
 	type $$Props = HTMLInputAttributes;
 	type $$Events = InputEvents;
@@ -14,7 +14,7 @@
 
 <input
 	class={cn(
-		'flex w-full bg-transparent rounded-lg border border-trunks p-3 text-sm focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 text-white placeholder:text-vegeta',
+		'flex w-full bg-transparent rounded-lg border border-trunks px-3 py-4 text-sm focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 text-white placeholder:text-vegeta',
 		className
 	)}
 	bind:value

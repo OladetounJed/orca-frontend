@@ -5,12 +5,12 @@
 	import PasswordInput from '$lib/components/shared/input/password-input.svelte';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { copyToClipboard } from '$lib/utils/clipboard';
-	import { isTokenSheetVisible, registrationData } from '$lib/stores/authStore';
+	import { tokenSheetState, registrationData } from '$lib/stores/authStore';
 
 	const dispatch = createEventDispatcher();
 </script>
 
-<Sheet.Root bind:open={$isTokenSheetVisible}>
+<Sheet.Root open={$tokenSheetState}>
 	<Sheet.Content side="bottom" class="flex flex-col gap-5">
 		<Sheet.Header>
 			<Sheet.Title>copy access token.</Sheet.Title>

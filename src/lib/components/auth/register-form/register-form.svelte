@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/shared/button';
 	import { Input, PasswordInput } from '$lib/components/shared/input';
+	import { formSubmissionState } from '$lib/stores/authStore';
 	import {
 		markAsTouched,
 		registerFormSchema,
@@ -79,7 +80,9 @@
 	{/if}
 	<p class="text-white text-xs font-light">
 		have an account?
-		<a class="underline" href="/login">login</a>
+		<a class="underline" href="/">login</a>
 	</p>
-	<Button type="submit">register</Button>
+	<Button disabled={$formSubmissionState} type="submit"
+		>{$formSubmissionState ? 'please wait...' : 'register'}</Button
+	>
 </form>
