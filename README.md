@@ -1,38 +1,49 @@
-# create-svelte
+# Orca Frontend
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+Orca Frontend is a modern web application built using SvelteKit, designed to provide a seamless and interactive user experience. This project leverages the latest web technologies, including Tailwind CSS for styling, Vite for an optimized build process, and Zod for schema validation.
 
-## Creating a project
+## Prerequisites
 
-If you're seeing this, you've probably already done this step. Congrats!
+Before you begin, ensure you have the following installed on your system:
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+- Node.js (v18.18.1 as specified in `.tool-versions`)
+- npm 
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+## Getting Started
 
-## Developing
+To get the project up and running on your local machine, follow these steps:
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+1. Clone the repository to your local machine:
+   ```bash
+   git clone https://github.com/OladetounJed/orca-frontend
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd orca-frontend
+   ```
+3. Install the dependencies by running:
+   ```bash
+   npm install
+   ```
+
+## Development
+
+To start the development server, run:
 
 ```bash
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+This command starts a local server and opens the application in your default web browser. The development server provides hot reloading, allowing you to see changes in real-time as you develop.
 
-To create a production version of your app:
+## Acknowledgments
 
-```bash
-npm run build
-```
+- **SvelteKit** for the framework
+- **Tailwind CSS** for the styling
+- **Vite** for the build tooling
+- **Zod** for schema validation
+- And all other dependencies listed in `package.json`
 
-You can preview the production build with `npm run preview`.
+## Contributing
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+Contributions are welcome! Please feel free to submit a pull request or open an issue.
