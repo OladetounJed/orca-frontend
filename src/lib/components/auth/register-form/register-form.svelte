@@ -16,7 +16,13 @@
 		firstName: '',
 		password: ''
 	});
-
+	const validationErrors = writable<RegisterFormErrorType>({});
+	const showPassword = writable(false);
+	const touched = writable({
+		telegramId: false,
+		password: false,
+		firstName: false
+	});
 	export let sessionData: { telegramId: string; firstName: string } | undefined;
 
 	onMount(() => {
@@ -27,14 +33,6 @@
 				password: ''
 			});
 		}
-	});
-
-	const validationErrors = writable<RegisterFormErrorType>({});
-	const showPassword = writable(false);
-	const touched = writable({
-		telegramId: false,
-		password: false,
-		firstName: false
 	});
 
 	$: $formData, validateFormHandler(validationErrors, $formData, registerFormSchema);

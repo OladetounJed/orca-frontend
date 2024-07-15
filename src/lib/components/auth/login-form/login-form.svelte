@@ -22,7 +22,6 @@
 
 	const handleSubmit = () => {
 		const validatedData = validateFormHandler(validationErrors, $formData, loginFormSchema);
-		console.log(validatedData);
 		if (validatedData) {
 			dispatch('submit', validatedData);
 		}

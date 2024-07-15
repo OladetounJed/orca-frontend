@@ -29,7 +29,6 @@
 			{ token },
 			tokenVerificationSchema
 		);
-		console.log(validatedToken);
 		if (validatedToken) {
 			closeTokenSheet();
 			dispatch('saveChanges', token);
